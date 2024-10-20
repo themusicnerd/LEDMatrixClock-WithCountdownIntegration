@@ -4,7 +4,7 @@
   Author: HACK Labs
   Version 3.0 
   Modified by: Adrian Davis 
-  Description: Added countdown timer by irisdown integration, web interface for adjusting settings, and Wi-Fi configuration. 
+  Description: Added Countdown Timer by Irisdown integration, web interface for adjusting settings, and Wi-Fi configuration. 
   *********************************************************************************************************/
 
 #include <SPI.h>
@@ -973,8 +973,14 @@ void loop() {
                     if (sign == '-') {
                         timeRemaining = -timeRemaining;
                     }
-                    // Store the timeRemaining and set a flag.
-                    countdownTime = timeRemaining;
+                    
+                    // **Add one second to positive countdowns to compensate for immediate decrement**
+                    if (timeRemaining > 0) {
+                        countdownTime = timeRemaining + 1;  // Add 1 second
+                    } else {
+                        countdownTime = timeRemaining;      // Do not adjust negative countdowns
+                    }
+                    
                     countdownReceivedMillis = millis();
                     countdownAvailable = true;
                 }
